@@ -12,7 +12,7 @@
 
 define('TEST_NAMESPACE', 'Fool\\Test\\');
 
-require_once '../autoload.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . '../autoload.php';
 
 $errorList = [];    # ассоциативный массив вида "ФАЙЛ:СТРОКА => КЛАСС->МЕТОД() - СООБЩЕНИЕ"
 $total = 0;         # общее количество тестов
