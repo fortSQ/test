@@ -12,8 +12,9 @@
 
 define('TEST_NAMESPACE', 'Fool\\Test\\');
 
-chdir('..');
-require_once 'autoload.php';
+//ini_set('include_path', dirname(__DIR__));
+require_once __DIR__ . '/../autoload.php';
+//chdir('..');
 
 $errorList = [];    # ассоциативный массив вида "ФАЙЛ:СТРОКА => КЛАСС->МЕТОД() - СООБЩЕНИЕ"
 $total = 0;         # общее количество тестов
