@@ -1,3 +1,5 @@
 language: php
 
-script: php bin/test
+script:
+  - cd bin
+  - php test
