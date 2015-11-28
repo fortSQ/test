@@ -52,6 +52,7 @@ function result() {
     print_r('111');
     global $errorList, $total;
     echo PHP_EOL;
+    print_r($errorList);
     if ($errorList) {
         $count = count($errorList);
         echo sprintf('Error [%d/%d tests]', $count, $total);
@@ -64,6 +65,7 @@ function result() {
         echo sprintf('OK [%d tests]', $total);
         print_r(sprintf('OK [%d tests]', $total));
     }
+    print_r('aaa');
 }
 
 if (isset($argv[1])) {
