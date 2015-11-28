@@ -24,12 +24,17 @@ $total = 0;         # общее количество тестов
  */
 function callTestMethodListByClass($class) {
     global $errorList, $total;
-    $methodList = get_class_methods($class);
+    //$methodList = get_class_methods($class);
+
+    //print_r($class);
+    $methodList = (new ReflectionClass($class))->getMethods();
+    //print_r($methodList);
+
     foreach ($methodList as $method) {
-        if (substr($method, 0, 4) == 'test') {
+        if (substr($method->name, 0, 4) == 'test') {
             $total++;
             try {
-                call_user_func([new $class(), $method]);
+                call_user_func([new $method->class, $method->name]);
             } catch (Exception $e) {
                 $error = $e->getTrace()[0];
                 $errorInClass = $e->getTrace()[1];
