@@ -35,6 +35,7 @@ function callTestMethodListByClass($class) {
             $total++;
             try {
                 call_user_func([new $method->class, $method->name]);
+                print_r($method->class . '->' . $method->name .PHP_EOL);
             } catch (Exception $e) {
                 $error = $e->getTrace()[0];
                 $errorInClass = $e->getTrace()[1];
