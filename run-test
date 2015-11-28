@@ -12,7 +12,7 @@
 
 define('TEST_NAMESPACE', 'Fool\\Test\\');
 
-require_once __DIR__ . DIRECTORY_SEPARATOR . '../autoload.php';
+require_once 'autoload.php';
 
 $errorList = [];    # ассоциативный массив вида "ФАЙЛ:СТРОКА => КЛАСС->МЕТОД() - СООБЩЕНИЕ"
 $total = 0;         # общее количество тестов
@@ -77,8 +77,7 @@ if (isset($argv[1])) {
         result();
     }
 } else {
-    // относительный путь к '../test'
-    $testDirectory = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'test';
+    $testDirectory = 'test';
     // убираем текущую и родительскую директории
     $testScriptList = array_diff(scandir($testDirectory), ['.', '..']);
     // убираем расширения файлов (php) у скриптов
