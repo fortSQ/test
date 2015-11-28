@@ -1,0 +1,88 @@
+<?php
+
+/**
+ * Запуск скрипта:
+ * >php test                            - прогон всех тестов в папке test
+ * >php test SomeClass                  - прогон всех test-методов у класса SomeClass в папке test
+ * >php test SomeClass testSomeMethod   - определенный метод класса
+ *
+ * В случае провального теста(-ов) скрипт завершит работу с кодом -1,
+ * если без ошибок - по умолчанию (0).
+ */
+
+define('TEST_NAMESPACE', 'Fool\\Test\\');
+
+require_once '../autoload.php';
+
+$errorList = [];    # ассоциативный массив вида "ФАЙЛ:СТРОКА => КЛАСС->МЕТОД() - СООБЩЕНИЕ"
+$total = 0;         # общее количество тестов
+
+/**
+ * Запустить все методы класса
+ *
+ * @param $class
+ */
+function callTestMethodListByClass($class) {
+    global $errorList, $total;
+    $methodList = get_class_methods($class);
+    foreach ($methodList as $method) {
+        if (substr($method, 0, 4) == 'test') {
+            $total++;
+            try {
+                call_user_func([new $class(), $method]);
+            } catch (Exception $e) {
+                $error = $e->getTrace()[0];
+                $errorInClass = $e->getTrace()[1];
+                $errorList[$error['file'] . ':' . $error['line']] = $errorInClass['class'] . $errorInClass['type'] . $errorInClass['function'] . '() - ' . $e->getMessage();
+            }
+        }
+    }
+}
+
+/**
+ * Отобразить результат выполнения тестов на экран
+ */
+function result() {
+    global $errorList, $total;
+    echo PHP_EOL;
+    if ($errorList) {
+        $count = count($errorList);
+        echo sprintf('Error [%d/%d tests]', $count, $total);
+        foreach ($errorList as $fileLine => $message) {
+            echo PHP_EOL . $fileLine . ': ' . $message;
+        }
+        exit(-1); # любое отличное от нуля число, возвращаемое скриптом, есть ошибка при его выполнении
+    } else {
+        echo sprintf('OK [%d tests]', $total);
+    }
+}
+
+if (isset($argv[1])) {
+    $className = TEST_NAMESPACE . $argv[1];
+    if (isset($argv[2])) {
+        echo PHP_EOL;
+        try {
+            call_user_func([new $className(), $argv[2]]);
+            echo 'OK';
+        } catch (Exception $e) {
+            echo sprintf('Error on line %d: %s', $e->getTrace()[0]['line'], $e->getMessage());
+        }
+    } else {
+        callTestMethodListByClass($className);
+        result();
+    }
+} else {
+    // относительный путь к '../test'
+    $testDirectory = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'test';
+    // убираем текущую и родительскую директории
+    $testScriptList = array_diff(scandir($testDirectory), ['.', '..']);
+    // убираем расширения файлов (php) у скриптов
+    $testScriptList = array_map(function ($testScript) {
+        return TEST_NAMESPACE . preg_replace('#.php$#si', '', $testScript);
+    }, $testScriptList);
+    // поочередно вызываем методы всех найденных классов
+    foreach ($testScriptList as $testClass) {
+        callTestMethodListByClass($testClass);
+    }
+    result();
+}
