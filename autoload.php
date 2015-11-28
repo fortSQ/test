@@ -28,14 +28,15 @@ function autoload($class, $baseNamespace, $src) {
     if (substr($class, 0, strlen($baseNamespace)) == $baseNamespace) {
         $class = substr($class, strlen($baseNamespace));
     }
-    $directory = __DIR__ . DIRECTORY_SEPARATOR;
+    $directory = '';
     // пока в пространстве имен встречаем разделитель пространства имен
     while ($pos = strpos($class, '\\')) {
         // добавляем такую директорию и убираем ее из полного названия класса
         $directory .= substr($class, 0, $pos) . DIRECTORY_SEPARATOR;
         $class = substr($class, $pos + 1);
     }
-    $load = $src . DIRECTORY_SEPARATOR . $directory . $class;
+    $load = __DIR__ . DIRECTORY_SEPARATOR . $src . DIRECTORY_SEPARATOR . $directory . $class;
+    print_r($load . PHP_EOL);
     // подгрузка, аналог require_once
     spl_autoload($load);
     //echo '<pre>' . $baseNamespace . ' ' . $class . ' - ' . $load . '</pre>';
