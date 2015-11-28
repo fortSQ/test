@@ -35,7 +35,7 @@ function autoload($class, $baseNamespace, $src) {
         $directory .= substr($class, 0, $pos) . DIRECTORY_SEPARATOR;
         $class = substr($class, $pos + 1);
     }
-    $load = __DIR__ . DIRECTORY_SEPARATOR . $src . DIRECTORY_SEPARATOR . $directory . $class;
+    $load = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . $src . DIRECTORY_SEPARATOR . $directory . $class;
     print_r($load . PHP_EOL);
     // подгрузка, аналог require_once
     spl_autoload($load);
