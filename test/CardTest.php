@@ -9,6 +9,11 @@ use Fool\Card\Rank;
 
 class CardTest extends TestCase
 {
+    public function __construct()
+    {
+        print_r('card_test run' . PHP_EOL);
+    }
+
     public function testEqualsCard()
     {
         $card = Card::create(Suit::SPADES, Rank::ACE);
