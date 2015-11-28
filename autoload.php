@@ -2,6 +2,8 @@
 
 define('BASE_NAMESPACE', 'Fool');
 
+print_r('!!!');
+
 // расширения файлов через запятую для подгрузки функцией spl_autoload
 spl_autoload_extensions('.php');
 // регистрации обработчиков при попытке доступа к классу
