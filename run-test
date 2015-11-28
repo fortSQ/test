@@ -66,6 +66,8 @@ function result() {
         print_r(sprintf('OK [%d tests]', $total));
     }
     print_r('aaa');
+    print_r(PHP_EOL);
+    print_r('aaa');
 }
 
 if (isset($argv[1])) {
