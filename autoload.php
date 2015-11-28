@@ -38,8 +38,11 @@ function autoload($class, $baseNamespace, $src) {
     $load = $src . DIRECTORY_SEPARATOR . $directory . $class;
     print_r($load . PHP_EOL);
     // подгрузка, аналог require_once
-    spl_autoload_extensions('.php');
-    spl_autoload($load);
+    //spl_autoload_extensions('.php');
+    //spl_autoload($load);
+    if (is_file($load . '.php')) {
+        require_once $load . '.php';
+    }
     print_r(get_declared_classes());
     //echo '<pre>' . $baseNamespace . ' ' . $class . ' - ' . $load . '</pre>';
 }
