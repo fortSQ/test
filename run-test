@@ -60,6 +60,7 @@ function result() {
         exit(-1); # любое отличное от нуля число, возвращаемое скриптом, есть ошибка при его выполнении
     } else {
         echo sprintf('OK [%d tests]', $total);
+        print_r(sprintf('OK [%d tests]', $total));
     }
 }
 
