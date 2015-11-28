@@ -1,3 +1,5 @@
 language: php
 
 script: php bin/test
+
+before_script: ini_set('include_path', '/home/travis/build/fortSQ/test/')
