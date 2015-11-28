@@ -39,6 +39,7 @@ function autoload($class, $baseNamespace, $src) {
     print_r($load . PHP_EOL);
     // подгрузка, аналог require_once
     spl_autoload($load);
+    print_r(get_declared_classes());
     //echo '<pre>' . $baseNamespace . ' ' . $class . ' - ' . $load . '</pre>';
 }
 
