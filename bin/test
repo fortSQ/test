@@ -55,10 +55,10 @@ function result() {
     echo PHP_EOL;
     if ($errorList) {
         $count = count($errorList);
-        echo sprintf('Error [%d/%d tests]', $count, $total);
         foreach ($errorList as $fileLine => $message) {
             echo PHP_EOL . $fileLine . ': ' . $message;
         }
+        echo sprintf('Error [%d/%d tests]', $count, $total);
         exit(-1); # любое отличное от нуля число, возвращаемое скриптом, есть ошибка при его выполнении
     } else {
         echo sprintf('OK [%d tests]', $total);
