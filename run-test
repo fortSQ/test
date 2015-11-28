@@ -49,6 +49,7 @@ function callTestMethodListByClass($class) {
  * Отобразить результат выполнения тестов на экран
  */
 function result() {
+    print_r('111');
     global $errorList, $total;
     echo PHP_EOL;
     if ($errorList) {
