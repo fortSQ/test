@@ -39,6 +39,7 @@ function autoload($class, $baseNamespace, $src) {
     // подгрузка, аналог require_once
     //spl_autoload_extensions('.php');
     //spl_autoload($load);
+    //print_r($load . PHP_EOL);
     if (is_file($load . '.php')) {
         require_once $load . '.php';
     }

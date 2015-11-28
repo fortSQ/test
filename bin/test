@@ -12,7 +12,8 @@
 
 define('TEST_NAMESPACE', 'Fool\\Test\\');
 
-require_once 'autoload.php';
+require_once '../autoload.php';
+chdir('..');
 
 $errorList = [];    # ассоциативный массив вида "ФАЙЛ:СТРОКА => КЛАСС->МЕТОД() - СООБЩЕНИЕ"
 $total = 0;         # общее количество тестов
@@ -35,7 +36,7 @@ function callTestMethodListByClass($class) {
             $total++;
             try {
                 call_user_func([new $method->class, $method->name]);
-                print_r($method->class . '->' . $method->name .PHP_EOL);
+                //print_r($method->class . '->' . $method->name .PHP_EOL);
             } catch (Exception $e) {
                 $error = $e->getTrace()[0];
                 $errorInClass = $e->getTrace()[1];
@@ -49,10 +50,8 @@ function callTestMethodListByClass($class) {
  * Отобразить результат выполнения тестов на экран
  */
 function result() {
-    print_r('111');
     global $errorList, $total;
     echo PHP_EOL;
-    print_r($errorList);
     if ($errorList) {
         $count = count($errorList);
         echo sprintf('Error [%d/%d tests]', $count, $total);
@@ -61,13 +60,9 @@ function result() {
         }
         exit(-1); # любое отличное от нуля число, возвращаемое скриптом, есть ошибка при его выполнении
     } else {
-        print_r('123');
         echo sprintf('OK [%d tests]', $total);
-        print_r(sprintf('OK [%d tests]', $total));
     }
-    print_r('aaa');
     print_r(PHP_EOL);
-    print_r('aaa');
 }
 
 if (isset($argv[1])) {
@@ -85,7 +80,7 @@ if (isset($argv[1])) {
         result();
     }
 } else {
-    $testDirectory = 'test';
+    $testDirectory = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'test';
     // убираем текущую и родительскую директории
     $testScriptList = array_diff(scandir($testDirectory), ['.', '..']);
     // убираем расширения файлов (php) у скриптов
@@ -96,6 +91,5 @@ if (isset($argv[1])) {
     foreach ($testScriptList as $testClass) {
         callTestMethodListByClass($testClass);
     }
-    print_r('321');
     result();
 }
