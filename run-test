@@ -59,6 +59,7 @@ function result() {
         }
         exit(-1); # любое отличное от нуля число, возвращаемое скриптом, есть ошибка при его выполнении
     } else {
+        print_r('123');
         echo sprintf('OK [%d tests]', $total);
         print_r(sprintf('OK [%d tests]', $total));
     }
@@ -90,5 +91,6 @@ if (isset($argv[1])) {
     foreach ($testScriptList as $testClass) {
         callTestMethodListByClass($testClass);
     }
+    print_r('321');
     result();
 }
