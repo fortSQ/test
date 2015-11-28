@@ -58,8 +58,9 @@ function result() {
         foreach ($errorList as $fileLine => $message) {
             echo PHP_EOL . $fileLine . ': ' . $message;
         }
+        echo PHP_EOL;
         echo sprintf('Error [%d/%d tests]', $count, $total);
-        print_r(PHP_EOL . PHP_EOL);
+        print_r(PHP_EOL);
         exit(1); # любое отличное от нуля число, возвращаемое скриптом, есть ошибка при его выполнении
     } else {
         echo sprintf('OK [%d tests]', $total);
