@@ -18,3 +18,4 @@ class FilterTest extends TestCase
         $this->assertTrue($suit->isTrump());
     }
 }
+
