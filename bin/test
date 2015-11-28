@@ -25,6 +25,10 @@ $total = 0;         # общее количество тестов
 function callTestMethodListByClass($class) {
     global $errorList, $total;
     $methodList = get_class_methods($class);
+
+    print_r($class);
+    print_r($methodList);
+
     foreach ($methodList as $method) {
         if (substr($method, 0, 4) == 'test') {
             $total++;
