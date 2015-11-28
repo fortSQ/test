@@ -3,7 +3,7 @@
 define('BASE_NAMESPACE', 'Fool');
 
 // расширения файлов через запятую для подгрузки функцией spl_autoload
-spl_autoload_extensions('.php');
+//spl_autoload_extensions('.php');
 // регистрации обработчиков при попытке доступа к классу
 $reg = [
     BASE_NAMESPACE => 'src',
