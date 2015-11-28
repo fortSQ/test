@@ -28,7 +28,7 @@ function autoload($class, $baseNamespace, $src) {
     if (substr($class, 0, strlen($baseNamespace)) == $baseNamespace) {
         $class = substr($class, strlen($baseNamespace));
     }
-    $directory ='';
+    $directory = __DIR__ . DIRECTORY_SEPARATOR;
     // пока в пространстве имен встречаем разделитель пространства имен
     while ($pos = strpos($class, '\\')) {
         // добавляем такую директорию и убираем ее из полного названия класса
