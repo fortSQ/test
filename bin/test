@@ -54,7 +54,8 @@ function result() {
         }
         exit(-1); # любое отличное от нуля число, возвращаемое скриптом, есть ошибка при его выполнении
     } else {
-        echo sprintf('OK [%d tests]', $total) . PHP_EOL;
+        //echo sprintf('OK [%d tests]', $total) . PHP_EOL;
+        echo "\033[42m\033[1m" . sprintf('OK [%d tests]', $total) . "\x1B[K" . "\033[0m" . PHP_EOL;
     }
 }
 
