@@ -12,9 +12,7 @@
 
 define('TEST_NAMESPACE', 'Fool\\Test\\');
 
-//ini_set('include_path', dirname(__DIR__));
-require_once __DIR__ . '/../autoload.php';
-//chdir('..');
+require_once realpath(__DIR__ . '/../autoload.php');
 
 $errorList = [];    # ассоциативный массив вида "ФАЙЛ:СТРОКА => КЛАСС->МЕТОД() - СООБЩЕНИЕ"
 $total = 0;         # общее количество тестов
@@ -27,17 +25,12 @@ $total = 0;         # общее количество тестов
 function callTestMethodListByClass($class) {
     global $errorList, $total;
     //$methodList = get_class_methods($class);
-
-    //print_r($class);
     $methodList = (new ReflectionClass($class))->getMethods();
-    //print_r($methodList);
-
     foreach ($methodList as $method) {
         if (substr($method->name, 0, 4) == 'test') {
             $total++;
             try {
-                call_user_func([new $method->class, $method->name]);
-                //print_r($method->class . '->' . $method->name .PHP_EOL);
+                call_user_func([new $method->class(), $method->name]);
             } catch (Exception $e) {
                 $error = $e->getTrace()[0];
                 $errorInClass = $e->getTrace()[1];
@@ -55,16 +48,13 @@ function result() {
     echo PHP_EOL;
     if ($errorList) {
         $count = count($errorList);
+        echo sprintf('Error [%d/%d tests]', $count, $total) . PHP_EOL;
         foreach ($errorList as $fileLine => $message) {
-            echo PHP_EOL . $fileLine . ': ' . $message;
+            echo $fileLine . ': ' . $message . PHP_EOL;
         }
-        echo PHP_EOL;
-        echo sprintf('Error [%d/%d tests]', $count, $total);
-        print_r(PHP_EOL);
-        exit(1); # любое отличное от нуля число, возвращаемое скриптом, есть ошибка при его выполнении
+        exit(-1); # любое отличное от нуля число, возвращаемое скриптом, есть ошибка при его выполнении
     } else {
-        echo sprintf('OK [%d tests]', $total);
-        print_r(PHP_EOL);
+        echo sprintf('OK [%d tests]', $total) . PHP_EOL;
     }
 }
 
@@ -74,16 +64,17 @@ if (isset($argv[1])) {
         echo PHP_EOL;
         try {
             call_user_func([new $className(), $argv[2]]);
-            echo 'OK';
+            echo 'OK' . PHP_EOL;
         } catch (Exception $e) {
-            echo sprintf('Error on line %d: %s', $e->getTrace()[0]['line'], $e->getMessage());
+            echo sprintf('Error on line %d: %s', $e->getTrace()[0]['line'], $e->getMessage()) . PHP_EOL;
         }
     } else {
         callTestMethodListByClass($className);
         result();
     }
 } else {
-    $testDirectory = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'test';
+    // относительный путь к '../test'
+    $testDirectory = realpath(__DIR__ . '/../test');
     // убираем текущую и родительскую директории
     $testScriptList = array_diff(scandir($testDirectory), ['.', '..']);
     // убираем расширения файлов (php) у скриптов

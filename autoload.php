@@ -7,8 +7,8 @@ define('BASE_NAMESPACE', 'Fool');
 // регистрации обработчиков при попытке доступа к классу
 $reg = [
     BASE_NAMESPACE => 'src',
-    BASE_NAMESPACE . '\\' . 'Resource'  => 'resource',
-    BASE_NAMESPACE . '\\' . 'Test'      => 'test',
+    BASE_NAMESPACE . '\\Resource'  => 'resource',
+    BASE_NAMESPACE . '\\Test'      => 'test',
 ];
 foreach ($reg as $namespace => $folder) {
     spl_autoload_register(function ($class) use ($namespace, $folder) {
@@ -35,14 +35,12 @@ function autoload($class, $baseNamespace, $src) {
         $directory .= substr($class, 0, $pos) . DIRECTORY_SEPARATOR;
         $class = substr($class, $pos + 1);
     }
-    $load = dirname(__FILE__) . DIRECTORY_SEPARATOR . $src . DIRECTORY_SEPARATOR . $directory . $class;
+    $load = dirname(__FILE__) . DIRECTORY_SEPARATOR . $src . DIRECTORY_SEPARATOR . $directory . $class . '.php';
     // подгрузка, аналог require_once
-    //spl_autoload_extensions('.php');
     //spl_autoload($load);
-    if (is_file($load . '.php')) {
-        require_once $load . '.php';
+    if (file_exists($load)) {
+        require_once $load;
     }
-    //echo '<pre>' . $baseNamespace . ' ' . $class . ' - ' . $load . '</pre>';
 }
 
 ########################################################################################################################
