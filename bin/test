@@ -10,7 +10,9 @@
  * если без ошибок - по умолчанию (0).
  */
 
+use Fool\Resource\Exception\TestException;
 use Fool\Resource\Console;
+use Fool\Resource\Type;
 
 define('TEST_NAMESPACE', 'Fool\\Test\\');
 
@@ -33,10 +35,10 @@ function callTestMethodListByClass($class) {
             $total++;
             try {
                 call_user_func([new $method->class(), $method->name]);
-            } catch (Exception $e) {
+            } catch (TestException $e) {
                 $error = $e->getTrace()[0];
                 $errorInClass = $e->getTrace()[1];
-                $errorList[$error['file'] . ':' . $error['line']] = $errorInClass['class'] . $errorInClass['type'] . Console::textColor($errorInClass['function'], Console::TYPE_ERROR) . '() - ' . $e->getMessage();
+                $errorList[$error['file'] . ':' . $error['line']] = $errorInClass['class'] . $errorInClass['type'] . Console::textColor($errorInClass['function'], Type::ERROR) . '() - ' . $e->getMessage();
             }
         }
     }
@@ -50,13 +52,13 @@ function result() {
     echo PHP_EOL;
     if ($errorList) {
         $count = count($errorList);
-        Console::echoColor(sprintf('Error [%d/%d tests]', $count, $total), Console::TYPE_ERROR, true);
+        Console::echoColor(sprintf('Error [%d/%d tests]', $count, $total), Type::ERROR, true);
         foreach ($errorList as $fileLine => $message) {
             echo $fileLine . ': ' . $message . PHP_EOL;
         }
         exit(-1); # любое отличное от нуля число, возвращаемое скриптом, есть ошибка при его выполнении
     } else {
-        Console::echoColor(sprintf('OK [%d tests]', $total), Console::TYPE_SUCCESS, true);
+        Console::echoColor(sprintf('OK [%d tests]', $total), Type::SUCCESS, true);
     }
 }
 
@@ -66,9 +68,9 @@ if (isset($argv[1])) {
         echo PHP_EOL;
         try {
             call_user_func([new $className(), $argv[2]]);
-            Console::echoColor('OK', Console::TYPE_SUCCESS, true);
+            Console::echoColor('OK', Type::SUCCESS, true);
         } catch (Exception $e) {
-            Console::echoColor(sprintf('Error on line %d: %s', $e->getTrace()[0]['line'], $e->getMessage()), Console::TYPE_ERROR, true);
+            Console::echoColor(sprintf('Error on line %d: %s', $e->getTrace()[0]['line'], $e->getMessage()), Type::ERROR, true);
         }
     } else {
         callTestMethodListByClass($className);

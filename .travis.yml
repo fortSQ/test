@@ -1,5 +1,8 @@
 language: php
+php: 7
+
 script: php bin/test
+
 branches:
     only:
         - master

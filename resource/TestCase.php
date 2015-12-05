@@ -2,7 +2,7 @@
 
 namespace Fool\Resource;
 
-use Exception;
+use Fool\Resource\Exception\TestException;
 
 abstract class TestCase
 {
@@ -15,7 +15,7 @@ abstract class TestCase
             if ($value === false) {
                 $value = 'false';
             }
-            throw new Exception("{$value} is not true");
+            throw new TestException(sprintf('%s is not true', $value));
         }
     }
 
@@ -28,7 +28,7 @@ abstract class TestCase
             $isEquals = !(array_diff($expected, $actual) && array_diff($actual, $expected));
         }
         if (!$isEquals) {
-            throw new Exception("{$expected} not equals {$actual}");
+            throw new TestException(sprintf('%s not equals %s', $expected, $actual));
         }
     }
 }
